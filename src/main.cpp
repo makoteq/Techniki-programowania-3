@@ -7,6 +7,37 @@
 #define INTERVAL 10
 #define SPAN (10*INTERVAL)
 
+std::vector<double> Discrete_Fourier_transform(std::vector<double> sygnals_array_x, std::vector<double> sygnals_array_y, bool separator) {
+    const float Euler = 2.71828182845904523536;
+    std::vector<double> sygnals_array_x_afterDFS;
+    std::vector<double> sygnals_array_y_afterDFS;
+    double transform_value_x = 0;
+    double transform_value_x_prev = 0;
+    double transform_value_y = 0;
+    double transform_value_y_prev = 0;
+    for (int i = 0; i < sygnals_array_x.size(); i++) {
+        transform_value_x = sygnals_array_x.at(i) * std::pow(Euler, -1 * sygnals_array_y.at(i) * 2 * 3.14 * i * (i / sygnals_array_x.size()));
+        transform_value_y = sygnals_array_y.at(i) * std::pow(Euler, -1 * sygnals_array_y.at(i) * 2 * 3.14 * i * (i / sygnals_array_y.size()));
+        transform_value_x = transform_value_x_prev + transform_value_x;
+        transform_value_y = transform_value_y_prev + transform_value_y;
+        transform_value_x_prev = transform_value_x;
+        transform_value_y_prev = transform_value_y;
+        sygnals_array_x_afterDFS.push_back(transform_value_x);
+        sygnals_array_y_afterDFS.push_back(transform_value_y);
+
+    }
+    if (separator == 0)
+    {
+        return sygnals_array_x_afterDFS;
+    }
+    else
+    {
+        return sygnals_array_y_afterDFS;
+    }
+}
+
+
+
 int add(int i, int j){
 
 namespace plt = matplot;
