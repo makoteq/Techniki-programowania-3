@@ -1,10 +1,56 @@
 #include <pybind11/pybind11.h>
+#include <iostream>
 #include <matplot/matplot.h>
 #include <cmath>
 #include "AudioFile.h"
+#include  <pybind11/stl.h>
+#include <pybind11/complex.h>
+#include <complex>
+#include <string>
+#include <vector>
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
+using namespace std::complex_literals;
+
+std::vector <std::string>
+Discrete_Fourier_transform(std::vector<double> signals_array_real, std::vector<double> signals_array_imaginary) {
+    std::cout << signals_array_real.at(0) << " " << signals_array_imaginary.at(0);
+    using namespace std::complex_literals;
+    std::vector <std::complex<double>> signals_array;
+    for (int i = 0; i < signals_array_real.size(); i++) {
+        signals_array.push_back({signals_array_real.at(i), signals_array_imaginary.at(i)});
+    }
+    std::vector <std::complex<double>> signals_array_afterDFS;
+    std::complex<double> transform_value = 0;
+    std::complex<double> transform_value_prev = 0;
+    std::complex<double> summ = 0;
+    for (int k = 0; k < signals_array.size(); k++) {
+        transform_value = 0;
+        transform_value_prev = 0;
+        summ = 0;
+        for (int n = 0; n < signals_array.size(); n++) {
+            std::complex<double>  WN = ((-6.28318530718i * (double)n * ((double)k) / (double)signals_array.size()));
+            std::complex<double>  Euler_pow = std::pow(2.718281828459045, WN);
+            transform_value_prev = signals_array.at(n) * Euler_pow;
+
+            summ = transform_value_prev + transform_value;
+            transform_value = summ;
+        }
+        signals_array_afterDFS.push_back(transform_value);
+    }
+    std::vector <std::string> signals_array_x_after;
+    std::vector <std::string> signals_array_y_after;
+    std::vector <std::string> signals_output;
+    for (int i = 0; i < signals_array.size(); i++) {
+        signals_array_x_after.push_back(std::to_string((int)round(real(signals_array_afterDFS.at(i)))));
+        signals_array_y_after.push_back(std::to_string((int)round(imag(signals_array_afterDFS.at(i)))));
+        signals_output.push_back(signals_array_x_after.at(i) + ' ' + signals_array_y_after.at(i) + 'i');
+        std::cout << signals_output.at(i) << std::endl;
+    }
+    return signals_output;
+}
+
 
 int visualizeSignal(int span, const char *path) {
 
@@ -25,6 +71,16 @@ int visualizeSignal(int span, const char *path) {
 
     matplot::show();
 }
+
+std::vector<float> ProcessSomeData(const std::vector<float> &input) {
+    std::vector<float> output;
+    output.resize(input.size());
+    for (size_t i = 0; i < input.size(); i++) {
+        output[i] = input[i] * input[i];
+    }
+    return output;
+}
+
 
 int generateSignal(int mode, int interval) {
     std::vector<double> x;
@@ -50,7 +106,7 @@ int generateSignal(int mode, int interval) {
             matplot::plot(x, y, "-o");
             break;
         case 2:
-            for (int i = 0; i < SPAN + 1; i++) {
+            for (int i = 0; i < SPAN; i++) {
                 if (index == (SPAN / (interval * 2))) {
                     state = !state;
                     index = 0;
@@ -67,7 +123,7 @@ int generateSignal(int mode, int interval) {
             x.push_back(0);
             y.push_back(state);
             state = true;
-            for (int i = 0; i < interval; i++) {
+            for (int i = 0; i < interval + 1; i++) {
                 if (i) {
                     x.push_back(i);
                     y.push_back(state);
@@ -109,12 +165,22 @@ doc() = R"pbdoc(
            generateSignal
     )pbdoc";
 
+m.def("Discrete_Fourier_transform", &Discrete_Fourier_transform, R"pbdoc(
+        Add two numbers
+
+        Some other explanation about the add function.
+    )pbdoc");
 m.def("visualizeSignal", &visualizeSignal, R"pbdoc(
         Add two numbers
 
         Some other explanation about the add function.
     )pbdoc");
 m.def("generateSignal", &generateSignal, R"pbdoc(
+        Add two numbers
+
+        Some other explanation about the add function.
+    )pbdoc");
+m.def("ProcessSomeData", &ProcessSomeData, R"pbdoc(
         Add two numbers
 
         Some other explanation about the add function.
