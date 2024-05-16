@@ -2,9 +2,6 @@ from __future__ import annotations
 
 import scikit_build_example as m
 
-
-def test_version():
-    assert m.__version__ == "0.0.1"
-
-
-m.generateSignal(3, 5)
+m.generateSignal(0,5)
+m.visualizeSignal(100,"./test-audio.wav")
+m.Discrete_Fourier_transform([1, 2, 0, -1], [0, -1, -1, 2])
