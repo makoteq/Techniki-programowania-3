@@ -11,11 +11,10 @@
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
-using namespace std::complex_literals;
+#define E 2.718281828459045
 
 std::vector <std::string>
 Discrete_Fourier_transform(std::vector<double> signals_array_real, std::vector<double> signals_array_imaginary) {
-    std::cout << signals_array_real.at(0) << " " << signals_array_imaginary.at(0);
     using namespace std::complex_literals;
     std::vector <std::complex<double>> signals_array;
     for (int i = 0; i < signals_array_real.size(); i++) {
@@ -30,8 +29,8 @@ Discrete_Fourier_transform(std::vector<double> signals_array_real, std::vector<d
         transform_value_prev = 0;
         summ = 0;
         for (int n = 0; n < signals_array.size(); n++) {
-            std::complex<double>  WN = ((-6.28318530718i * (double)n * ((double)k) / (double)signals_array.size()));
-            std::complex<double>  Euler_pow = std::pow(2.718281828459045, WN);
+            std::complex<double> WN = ((-6.28318530718i * (double) n * ((double) k) / (double) signals_array.size()));
+            std::complex < double > Euler_pow = std::pow( E, WN);
             transform_value_prev = signals_array.at(n) * Euler_pow;
 
             summ = transform_value_prev + transform_value;
@@ -43,8 +42,8 @@ Discrete_Fourier_transform(std::vector<double> signals_array_real, std::vector<d
     std::vector <std::string> signals_array_y_after;
     std::vector <std::string> signals_output;
     for (int i = 0; i < signals_array.size(); i++) {
-        signals_array_x_after.push_back(std::to_string((int)round(real(signals_array_afterDFS.at(i)))));
-        signals_array_y_after.push_back(std::to_string((int)round(imag(signals_array_afterDFS.at(i)))));
+        signals_array_x_after.push_back(std::to_string((int) round(real(signals_array_afterDFS.at(i)))));
+        signals_array_y_after.push_back(std::to_string((int) round(imag(signals_array_afterDFS.at(i)))));
         signals_output.push_back(signals_array_x_after.at(i) + ' ' + signals_array_y_after.at(i) + 'i');
         std::cout << signals_output.at(i) << std::endl;
     }
@@ -64,7 +63,7 @@ int visualizeSignal(int span, const char *path) {
 
     for (int i = 0; i < span; i++) {
         x.push_back(i);
-        y.push_back(audioFile.samples[channel][i]);
+        y.push_back(audioFile.samples[channel][i] * 4);
     }
 
     matplot::plot(x, y, "-o");
