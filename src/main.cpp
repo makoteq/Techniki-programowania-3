@@ -3,7 +3,7 @@
 #include <matplot/matplot.h>
 #include <cmath>
 #include "AudioFile.h"
-#include  <pybind11/stl.h>
+#include <pybind11/stl.h>
 #include <pybind11/complex.h>
 #include <complex>
 #include <string>
@@ -30,7 +30,7 @@ Discrete_Fourier_transform(std::vector<double> signals_array_real, std::vector<d
         summ = 0;
         for (int n = 0; n < signals_array.size(); n++) {
             std::complex<double> WN = ((-6.28318530718i * (double) n * ((double) k) / (double) signals_array.size()));
-            std::complex < double > Euler_pow = std::pow( E, WN);
+            std::complex<double> Euler_pow = std::pow(E, WN);
             transform_value_prev = signals_array.at(n) * Euler_pow;
 
             summ = transform_value_prev + transform_value;
@@ -71,13 +71,25 @@ int visualizeSignal(int span, const char *path) {
     matplot::show();
 }
 
-std::vector<float> ProcessSomeData(const std::vector<float> &input) {
-    std::vector<float> output;
-    output.resize(input.size());
-    for (size_t i = 0; i < input.size(); i++) {
-        output[i] = input[i] * input[i];
+int differenceSignal(int span, std::string path) {
+
+    AudioFile<double> audioFile;
+    audioFile.load(path);
+
+    std::vector<double> x;
+    std::vector<double> y;
+
+    int channel = 0;
+
+    for (int i = 0; i < span; i++) {
+        x.push_back(i);
+        //  double diff = audioFile.samples[channel][i+1]-audioFile.samples[channel][i];
+        y.push_back(audioFile.samples[channel][i + 1] - audioFile.samples[channel][i]);
     }
-    return output;
+    matplot::ylim({-1, +1});
+    matplot::plot(x, y, "-o");
+    matplot::show();
+    return 0;
 }
 
 
@@ -179,7 +191,7 @@ m.def("generateSignal", &generateSignal, R"pbdoc(
 
         Some other explanation about the add function.
     )pbdoc");
-m.def("ProcessSomeData", &ProcessSomeData, R"pbdoc(
+m.def("differenceSignal", &differenceSignal, R"pbdoc(
         Add two numbers
 
         Some other explanation about the add function.
