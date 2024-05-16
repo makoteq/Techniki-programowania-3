@@ -63,7 +63,7 @@ int visualizeSignal(int span, const char *path) {
 
     for (int i = 0; i < span; i++) {
         x.push_back(i);
-        y.push_back(audioFile.samples[channel][i] * 4);
+        y.push_back(audioFile.samples[channel][i]);
     }
 
     matplot::plot(x, y, "-o");
@@ -86,7 +86,6 @@ int differenceSignal(int span, std::string path) {
         //  double diff = audioFile.samples[channel][i+1]-audioFile.samples[channel][i];
         y.push_back(audioFile.samples[channel][i + 1] - audioFile.samples[channel][i]);
     }
-    matplot::ylim({-1, +1});
     matplot::plot(x, y, "-o");
     matplot::show();
     return 0;
@@ -97,7 +96,7 @@ int generateSignal(int mode, int interval) {
     std::vector<double> x;
     std::vector<double> y;
     int index = 0;
-    bool state = true;
+    int state = true;
     int SPAN(10 * interval);
     switch (mode) {
         case 0 :
@@ -130,23 +129,23 @@ int generateSignal(int mode, int interval) {
             matplot::ylim({-1, +2});
             break;
         case 3:
-            state = false;
+            state = -1;
             x.push_back(0);
             y.push_back(state);
-            state = true;
+            state = 1;
             for (int i = 0; i < interval + 1; i++) {
                 if (i) {
                     x.push_back(i);
                     y.push_back(state);
-                    state = false;
+                    state = -1;
                     x.push_back(i);
                     y.push_back(state);
-                    state = true;
+                    state = 1;
                 }
 
             }
             matplot::plot(x, y, "-o");
-            matplot::ylim({-1, +2});
+            matplot::ylim({-2, +2});
             break;
 
     }
