@@ -13,7 +13,6 @@
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 #define E 2.718281828459045
 
-std::vector <std::string>
 Discrete_Fourier_transform(std::vector<double> signals_array_real, std::vector<double> signals_array_imaginary) {
     using namespace std::complex_literals;
     std::vector <std::complex<double>> signals_array;
