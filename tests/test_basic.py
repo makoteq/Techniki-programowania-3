@@ -13,3 +13,7 @@ m.generateSignal(3, 5)
 
 # first array for real, second for imaginary
 m.Discrete_Fourier_transform([1, 2, 0, -1], [0, -1, -1, 2])
+
+print("______________________")
+# first array for real, second for imaginary
+m.Inverse_Discrete_Fourier_transform([2, -2, 0, 4], [0, -2, -2, 4])
