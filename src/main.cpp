@@ -166,9 +166,9 @@ int generateSignal(int mode, int interval) {
                 y.push_back(state);
                 index++;
             }
+            matplot::ylim({-1, +2});
             matplot::stairs(x, y, "-o");
             matplot::save("img/stairs.jpg");
-            matplot::ylim({-1, +2});
             break;
         case 3:
             state = -1;
@@ -186,9 +186,9 @@ int generateSignal(int mode, int interval) {
                 }
 
             }
+            matplot::ylim({-2, +2});
             matplot::plot(x, y, "-o");
             matplot::save("img/blade.jpg");
-            matplot::ylim({-2, +2});
             break;
 
     }
