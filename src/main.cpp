@@ -13,7 +13,8 @@
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 #define E 2.718281828459045
 
-std::vector <std::string> Discrete_Fourier_transform(std::vector<double> signals_array_real, std::vector<double> signals_array_imaginary) {
+std::vector <std::string>
+Discrete_Fourier_transform(std::vector<double> signals_array_real, std::vector<double> signals_array_imaginary) {
     using namespace std::complex_literals;
     std::vector <std::complex<double>> signals_array;
     for (int i = 0; i < signals_array_real.size(); i++) {
@@ -213,35 +214,22 @@ doc() = R"pbdoc(
 
         .. autosummary::
            :toctree: _generate
-
-           visualizeSignal
-           generateSignal
+            Discrete_Fourier_transform
+            Inverse_Discrete_Fourier_transform
+            visualizeSignal
+            generateSignal
+            differenceSignal
     )pbdoc";
 
 m.def("Discrete_Fourier_transform", &Discrete_Fourier_transform, R"pbdoc(
-        Add two numbers
-
-        Some other explanation about the add function.
     )pbdoc");
 m.def("Inverse_Discrete_Fourier_transform", &Inverse_Discrete_Fourier_transform, R"pbdoc(
-        Add two numbers
-
-        Some other explanation about the add function.
     )pbdoc");
 m.def("visualizeSignal", &visualizeSignal, R"pbdoc(
-        Add two numbers
-
-        Some other explanation about the add function.
     )pbdoc");
 m.def("generateSignal", &generateSignal, R"pbdoc(
-        Add two numbers
-
-        Some other explanation about the add function.
     )pbdoc");
 m.def("differenceSignal", &differenceSignal, R"pbdoc(
-        Add two numbers
-
-        Some other explanation about the add function.
     )pbdoc");
 
 #ifdef VERSION_INFO
