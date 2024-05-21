@@ -142,6 +142,3 @@ cython_debug/
 
 _skbuild/
 .pyodide-xbuildenv/
-
-matplotplusplus/
-pybind11/
