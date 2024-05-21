@@ -13,7 +13,7 @@
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 #define E 2.718281828459045
 
-Discrete_Fourier_transform(std::vector<double> signals_array_real, std::vector<double> signals_array_imaginary) {
+std::vector <std::string> Discrete_Fourier_transform(std::vector<double> signals_array_real, std::vector<double> signals_array_imaginary) {
     using namespace std::complex_literals;
     std::vector <std::complex<double>> signals_array;
     for (int i = 0; i < signals_array_real.size(); i++) {
@@ -48,28 +48,26 @@ Discrete_Fourier_transform(std::vector<double> signals_array_real, std::vector<d
     }
     return signals_output;
 }
-std::vector<std::string> Inverse_Discrete_Fourier_transform(std::vector<double> signals_array_realB, std::vector<double> signals_array_imaginaryB)
-{
+
+std::vector <std::string> Inverse_Discrete_Fourier_transform(std::vector<double> signals_array_realB,
+                                                             std::vector<double> signals_array_imaginaryB) {
     using namespace std::complex_literals;
-    std::vector<std::complex<double>> signals_arrayB;
-    for (int i = 0; i < signals_array_realB.size(); i++)
-    {
-        signals_arrayB.push_back({ signals_array_realB.at(i) , signals_array_imaginaryB.at(i) });
+    std::vector <std::complex<double>> signals_arrayB;
+    for (int i = 0; i < signals_array_realB.size(); i++) {
+        signals_arrayB.push_back({signals_array_realB.at(i), signals_array_imaginaryB.at(i)});
     }
-    std::vector<std::complex<double>> signals_array_afterDFSB;
+    std::vector <std::complex<double>> signals_array_afterDFSB;
     std::complex<double> transform_valueB = 0;
     std::complex<double> transform_value_prevB = 0;
     std::complex<double> summB = 0;
-    for (int k = 0; k < signals_arrayB.size(); k++)
-    {
+    for (int k = 0; k < signals_arrayB.size(); k++) {
         transform_valueB = 0;
         transform_value_prevB = 0;
         summB = 0;
-        for (int n = 0; n < signals_arrayB.size(); n++)
-        {
-            std::complex<double>  WNB = ((6.28318530718i * (double)n * ((double)k) / (double)signals_arrayB.size()));
-            std::complex<double>  Euler_powB = std::pow(2.718281828459045, WNB);
-            std::complex<double>  N1 = 1 / (double)signals_arrayB.size();
+        for (int n = 0; n < signals_arrayB.size(); n++) {
+            std::complex<double> WNB = ((6.28318530718i * (double) n * ((double) k) / (double) signals_arrayB.size()));
+            std::complex<double> Euler_powB = std::pow(2.718281828459045, WNB);
+            std::complex<double> N1 = 1 / (double) signals_arrayB.size();
             transform_value_prevB = signals_arrayB.at(n) * Euler_powB * N1;
 
             summB = transform_value_prevB + transform_valueB;
@@ -77,13 +75,13 @@ std::vector<std::string> Inverse_Discrete_Fourier_transform(std::vector<double> 
         }
         signals_array_afterDFSB.push_back(transform_valueB);
     }
-    std::vector<std::string> signals_array_x_afterB;
-    std::vector<std::string> signals_array_y_afterB;
-    std::vector<std::string> signals_outputB;
+    std::vector <std::string> signals_array_x_afterB;
+    std::vector <std::string> signals_array_y_afterB;
+    std::vector <std::string> signals_outputB;
 
     for (int i = 0; i < signals_arrayB.size(); i++) {
-        signals_array_x_afterB.push_back(std::to_string((int)round(real(signals_array_afterDFSB.at(i)))));
-        signals_array_y_afterB.push_back(std::to_string((int)round(imag(signals_array_afterDFSB.at(i)))));
+        signals_array_x_afterB.push_back(std::to_string((int) round(real(signals_array_afterDFSB.at(i)))));
+        signals_array_y_afterB.push_back(std::to_string((int) round(imag(signals_array_afterDFSB.at(i)))));
         signals_outputB.push_back(signals_array_x_afterB.at(i) + ' ' + signals_array_y_afterB.at(i) + 'i');
         std::cout << signals_outputB.at(i) << std::endl;
     }
