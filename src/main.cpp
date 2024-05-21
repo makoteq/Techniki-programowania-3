@@ -105,7 +105,7 @@ int visualizeSignal(int span, const char *path) {
     }
 
     matplot::plot(x, y, "-o");
-
+    matplot::save("img/visualizeSignal.jpg");
     matplot::show();
 }
 
@@ -125,6 +125,7 @@ int differenceSignal(int span, std::string path) {
         y.push_back(audioFile.samples[channel][i + 1] - audioFile.samples[channel][i]);
     }
     matplot::plot(x, y, "-o");
+    matplot::save("img/differenceSignal.jpg");
     matplot::show();
     return 0;
 }
@@ -144,6 +145,7 @@ int generateSignal(int mode, int interval) {
             }
             matplot::ylim({-1.5, +1.5});
             matplot::plot(x, y, "-o");
+            matplot::save("img/sin.jpg");
             break;
         case 1 :
             for (float i = 0; i < SPAN + 1; i++) {
@@ -152,6 +154,7 @@ int generateSignal(int mode, int interval) {
             }
             matplot::ylim({-1.5, +1.5});
             matplot::plot(x, y, "-o");
+            matplot::save("img/cos.jpg");
             break;
         case 2:
             for (int i = 0; i < SPAN; i++) {
@@ -164,6 +167,7 @@ int generateSignal(int mode, int interval) {
                 index++;
             }
             matplot::stairs(x, y, "-o");
+            matplot::save("img/stairs.jpg");
             matplot::ylim({-1, +2});
             break;
         case 3:
@@ -183,6 +187,7 @@ int generateSignal(int mode, int interval) {
 
             }
             matplot::plot(x, y, "-o");
+            matplot::save("img/blade.jpg");
             matplot::ylim({-2, +2});
             break;
 
